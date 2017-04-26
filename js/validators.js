@@ -1,5 +1,5 @@
 'use strict';
-angular.module('validators',[]).constant('MODULE_VERSION','0.0.3')
+angular.module('validators',[]).constant('MODULE_VERSION','0.0.1')
 .value('defaults',{
 	email: /[\w-\.]{3,}@([\w-]{2,}\.)*([\w-]{2,}\.)[\w-]{2,4}/,
 	hour: /^(0[0-9]|1\d|2[0-3]):([0-5]\d)(:([0-5]\d))*$/,
@@ -7,7 +7,8 @@ angular.module('validators',[]).constant('MODULE_VERSION','0.0.3')
 	integer: /^\d+$/,
 	decimal: /^-?\d+(\.(\d)*)?$/,
 	string: /^[a-zA-z]$/,
-	fulldate: /^\d{4,4}-\d{1,2}-\d{1,2}\s(0[0-9]|1\d|2[0-3]):([0-5]\d)(:([0-5]\d))*$/
+	fulldate: /^\d{4,4}-\d{1,2}-\d{1,2}\s(0[0-9]|1\d|2[0-3]):([0-5]\d)(:([0-5]\d))*$/,
+	errors:[]
 })
 .directive('emailValidator',['defaults',function(defaults)
 {
@@ -17,7 +18,6 @@ angular.module('validators',[]).constant('MODULE_VERSION','0.0.3')
 		{
 			function emailValidator(value)
 			{
-				//console.log(ngController);
 				if(!defaults.email.test(value))
 					ngController.$setValidity(attr.name,false);
 				else
@@ -85,4 +85,23 @@ angular.module('validators',[]).constant('MODULE_VERSION','0.0.3')
 			ngController.$parsers.push(minmaxValidator);
 		}
 	};
-}]);
+}])
+.service("validation",function(defaults)
+{
+	this.printErrors = function(){
+		console.log(defaults.errors);
+	}
+	this.isValid = function(form){
+		if(typeof form != "undefined" && typeof form.$valid != "undefined")
+		{
+			if(!form.$valid)
+				defaults.errors = form.$error;
+			return form.$valid;
+		}
+		else
+		{
+			console.log("No es un formulario");
+			return false;
+		}	
+	}
+});

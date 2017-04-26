@@ -1,10 +1,11 @@
 var app = angular.module('index', ['validators']);
-app.controller('ctrl1',function($scope)
+app.controller('ctrl1',function($scope,validation)
 {
 	$scope.names = ["manuel","jose","Pedro","Mario"];
-	$scope.addNewName = function(isValid)
+	$scope.addNewName = function()
 	{
-		if(isValid)
+		console.log($scope.nombre);
+		if(validation.isValid($scope.nombre))
 		{
 			$scope.names[$scope.names.length] = $scope.nombre;
 			console.log($scope.myform.nombre);
@@ -12,7 +13,7 @@ app.controller('ctrl1',function($scope)
 		}
 		else
 		{
-			console.log($scope.myform.$error);
+			validation.printErrors()
 		}
 	};
 });
