@@ -4,8 +4,7 @@ app.controller('ctrl1',function($scope,validation)
 	$scope.names = ["manuel","jose","Pedro","Mario"];
 	$scope.addNewName = function()
 	{
-		console.log($scope.nombre);
-		if(validation.isValid($scope.nombre))
+		if(validation.isValid($scope.myform))
 		{
 			$scope.names[$scope.names.length] = $scope.nombre;
 			console.log($scope.myform.nombre);

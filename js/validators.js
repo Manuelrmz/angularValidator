@@ -19,70 +19,89 @@ angular.module('validators',[]).constant('MODULE_VERSION','0.0.1')
 			function emailValidator(value)
 			{
 				if(!defaults.email.test(value))
-					ngController.$setValidity(attr.name,false);
+					ngController.$setValidity("ngEmail",false);
 				else
-					ngController.$setValidity(attr.name,true);
+					ngController.$setValidity("ngEmail",true);
 				return value;
 			}
 			ngController.$parsers.push(emailValidator);
 		}
 	};
 }])
-.directive('minValidator',['defaults',function(defaults)
+.directive('ngSmin',['defaults',function(defaults)
 {
 	return{
 		require:'ngModel',
 		link:function(scope, elem, attr, ngController)
 		{
-			function minValidator(value)
+			function minStringValue(value)
 			{
-				var minValue = attr.ngMin != undefined ? parseInt(attr.ngMin) : 1;
+				var minValue = scope.$eval(attr.ngSmin) || 1;
 				if(value.length < minValue)
-					ngController.$setValidity(attr.name,false);
+					ngController.$setValidity("ngSmin",false);
 				else
-					ngController.$setValidity(attr.name,true);
+					ngController.$setValidity("ngSmin",true);
 				return value;
 			}
-			ngController.$parsers.push(minValidator);
+			ngController.$parsers.push(minStringValue);
 		}
 	};
 }])
-.directive('maxValidator',['defaults',function(defaults)
+.directive('ngSmax',['defaults',function(defaults)
 {
 	return{
 		require:'ngModel',
 		link:function(scope, elem, attr, ngController)
 		{
-			function maxValidator(value)
+			function maxStringValue(value)
 			{
-				var maxValue = attr.ngMax != undefined ? parseInt(attr.ngMax) : Infinity;
-				if(value.length <= maxValue)
-					ngController.$setValidity(attr.name,false);
+				var maxValue = scope.$eval(attr.ngSmax) || Infinity;
+				if(value.length > maxValue)
+					ngController.$setValidity("ngSmax",false);
 				else
-					ngController.$setValidity(attr.name,true);
+					ngController.$setValidity("ngSmax",true);
 				return value;
 			}
-			ngController.$parsers.push(maxValidator);
+			ngController.$parsers.push(maxStringValue);
 		}
 	};
 }])
-.directive('minmaxValidator',['defaults',function(defaults)
+.directive('ngMin',['defaults',function(defaults)
 {
 	return{
 		require:'ngModel',
 		link:function(scope, elem, attr, ngController)
 		{
-			function minmaxValidator(value)
+			function minIntegerValue(value)
 			{
-				var minValue = attr.nvMin != undefined ? parseInt(attr.nvMin) : 1;
-				var maxValue = attr.ngMax != undefined ? parseInt(attr.ngMax) : Infinity;
-				if(value.length < minValue || value.length > maxValue)
-					ngController.$setValidity(attr.name,false);
+				var minValue = scope.$eval(attr.ngMin) || 0;
+				if(value < minValue)
+					ngController.$setValidity("ngMin",false);
 				else
-					ngController.$setValidity(attr.name,true);
+					ngController.$setValidity("ngMin",true);
+				return value;
+				
+			}
+			ngController.$parsers.push(minIntegerValue);
+		}
+	};
+}])
+.directive('ngMax',['defaults',function(defaults)
+{
+	return{
+		require:'ngModel',
+		link:function(scope, elem, attr, ngController)
+		{
+			function maxIntegerValue(value)
+			{
+				var maxValue = scope.$eval(attr.ngMax) || Infinity;
+				if(value > maxValue)
+					ngController.$setValidity("ngMax",false);
+				else
+					ngController.$setValidity("ngMax",true);
 				return value;
 			}
-			ngController.$parsers.push(minmaxValidator);
+			ngController.$parsers.push(maxIntegerValue);
 		}
 	};
 }])
@@ -92,14 +111,12 @@ angular.module('validators',[]).constant('MODULE_VERSION','0.0.1')
 		console.log(defaults.errors);
 	}
 	this.isValid = function(form){
-		if(typeof form != "undefined" && typeof form.$valid != "undefined")
-		{
+		if(typeof form != "undefined" && typeof form.$valid != "undefined"){
 			if(!form.$valid)
 				defaults.errors = form.$error;
 			return form.$valid;
 		}
-		else
-		{
+		else{
 			console.log("No es un formulario");
 			return false;
 		}	

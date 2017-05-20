@@ -12,9 +12,9 @@
 <body ng-app="index">
 	<div ng-controller="ctrl1">
 		<form name="myform" ng-submit="addNewName()" novalidate>
-			Nombre:&nbsp;<input name="nombre" type="text" ng-model="nombre" ng-min="2" ng-max="150" required minmax-validator ></br>
-			Apellidos:&nbsp;<input name="apellido" type="text" ng-model="apellido" required ng-min="2" min-validator></br>
-			Email:&nbsp;<input name="email" type="email" ng-model="email" required email-validator ></br>
+			Nombre:&nbsp;<input name="nombre" type="text" ng-model="nombre" ng-Smin="2" ng-SMax="10" required></br>
+			Apellidos:&nbsp;<input name="apellido" type="text" ng-model="apellido" required ng-Smin="2" ng-SMax="20"></br>
+			Email:&nbsp;<input name="email" type="email" ng-model="email" email-validator required></br>
 			<button>Add new Name</button>	
 			<ul>
 				<li ng-repeat="x in names">
