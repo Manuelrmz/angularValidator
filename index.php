@@ -14,7 +14,8 @@
 		<form name="myform" ng-submit="addNewName()" novalidate>
 			Nombre:&nbsp;<input name="nombre" type="text" ng-model="nombre" ng-Smin="2" ng-SMax="10" required></br>
 			Apellidos:&nbsp;<input name="apellido" type="text" ng-model="apellido" required ng-Smin="2" ng-SMax="20"></br>
-			Email:&nbsp;<input name="email" type="email" ng-model="email" email-validator required></br>
+			Email:&nbsp;<input name="email" type="email" ng-model="email" check-email required></br>
+			Date:&nbsp;<input name="date" type="date" ng-model="date" check-date required></br>
 			<button>Add new Name</button>	
 			<ul>
 				<li ng-repeat="x in names">

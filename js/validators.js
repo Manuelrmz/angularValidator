@@ -10,7 +10,7 @@ angular.module('validators',[]).constant('MODULE_VERSION','0.0.1')
 	fulldate: /^\d{4,4}-\d{1,2}-\d{1,2}\s(0[0-9]|1\d|2[0-3]):([0-5]\d)(:([0-5]\d))*$/,
 	errors:[]
 })
-.directive('emailValidator',['defaults',function(defaults)
+.directive('checkEmail',['defaults',function(defaults)
 {
 	return{
 		require:'ngModel',
@@ -18,13 +18,85 @@ angular.module('validators',[]).constant('MODULE_VERSION','0.0.1')
 		{
 			function emailValidator(value)
 			{
-				if(!defaults.email.test(value))
-					ngController.$setValidity("ngEmail",false);
-				else
-					ngController.$setValidity("ngEmail",true);
+				ngController.$setValidity("ngEmail",defaults.email.test(value));
 				return value;
 			}
 			ngController.$parsers.push(emailValidator);
+		}
+	};
+}])
+.directive('checkHour',['defaults',function(defaults)
+{
+	return{
+		require:'ngModel',
+		link:function(scope,elem,attr,ngController)
+		{
+			function checkHour(value)
+			{
+				ngController.$setValidity('ngTime',defaults.hour.test(value));
+				return value;
+			}
+			ngController.$parsers.push(checkHour);
+		}
+	};
+}])
+.directive('checkDate',['defaults',function(defaults)
+{
+	return{
+		require:'ngModel',
+		link:function(scope,elem,attr,ngController)
+		{
+			function checkDate(value)
+			{
+				ngController.$setValidity('ngDate',defaults.date.test(value));
+				return value;
+			}
+			ngController.$parsers.push(checkDate);
+		}
+	};
+}])
+.directive('checkFulldate',['defaults',function(defaults)
+{
+	return{
+		require:'ngModel',
+		link:function(scope,elem,attr,ngController)
+		{
+			function checkFulldate(value)
+			{
+				ngController.$setValidity('ngFullDate',defaults.fulldate.test(value));
+				return value;
+			}
+			ngController.$parses.push(checkFulldate)
+		}
+	};
+}])
+.directive('checkInteger',['defaults',function(defaults)
+{
+	return{
+		require:'ngModel',
+		link:function(scope,elem,attr,ngController)
+		{
+			function checkInteger(value)
+			{
+				ngController.$setValidity('ngInteger',defaults.integer.test(value));
+				return value;
+			}
+			ngController.$parsers.push(checkInteger);
+		}
+	};
+}])
+.directive('checkDecimal',['defaults',function(defaults)
+{
+	return{
+		require:'ngModel',
+		link:function(scope,elem,attr,ngController)
+		{
+			function checkDecimal(value)
+			{
+				ngController.$setValidity('ngDecimal',defaults.decimal.test(value));
+				return value;
+			}
+			ngController.$parsers.push(checkDecimal);
 		}
 	};
 }])
@@ -37,10 +109,7 @@ angular.module('validators',[]).constant('MODULE_VERSION','0.0.1')
 			function minStringValue(value)
 			{
 				var minValue = scope.$eval(attr.ngSmin) || 1;
-				if(value.length < minValue)
-					ngController.$setValidity("ngSmin",false);
-				else
-					ngController.$setValidity("ngSmin",true);
+				ngController.$setValidity("ngSmin",value.length >= minValue);
 				return value;
 			}
 			ngController.$parsers.push(minStringValue);
@@ -56,10 +125,7 @@ angular.module('validators',[]).constant('MODULE_VERSION','0.0.1')
 			function maxStringValue(value)
 			{
 				var maxValue = scope.$eval(attr.ngSmax) || Infinity;
-				if(value.length > maxValue)
-					ngController.$setValidity("ngSmax",false);
-				else
-					ngController.$setValidity("ngSmax",true);
+				ngController.$setValidity("ngSmax",value.length <= maxValue);
 				return value;
 			}
 			ngController.$parsers.push(maxStringValue);
@@ -75,10 +141,7 @@ angular.module('validators',[]).constant('MODULE_VERSION','0.0.1')
 			function minIntegerValue(value)
 			{
 				var minValue = scope.$eval(attr.ngMin) || 0;
-				if(value < minValue)
-					ngController.$setValidity("ngMin",false);
-				else
-					ngController.$setValidity("ngMin",true);
+				ngController.$setValidity("ngMin",value >= minValue);
 				return value;
 				
 			}
@@ -95,10 +158,7 @@ angular.module('validators',[]).constant('MODULE_VERSION','0.0.1')
 			function maxIntegerValue(value)
 			{
 				var maxValue = scope.$eval(attr.ngMax) || Infinity;
-				if(value > maxValue)
-					ngController.$setValidity("ngMax",false);
-				else
-					ngController.$setValidity("ngMax",true);
+				ngController.$setValidity("ngMax",value < maxValue);
 				return value;
 			}
 			ngController.$parsers.push(maxIntegerValue);
